@@ -4,7 +4,8 @@
   "description": "Loggit Lightweight Code Editor",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "electron ."
   },
   "keywords": [
     "loggit",
