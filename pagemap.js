@@ -262,9 +262,9 @@ return /******/ (function(modules) { // webpackBootstrap
     draw();
   })
 
-  window.onclick = function() {
-    draw();
-  }
+  //window.onclick = function() {
+  //  draw();
+  //}
 
   var on_drag = function on_drag(ev) {
     ev.preventDefault();

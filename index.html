@@ -631,6 +631,8 @@
                 setTimeout(() => {
                     _('popbox').style('display', 'none');
                 }, 200)
+
+                console.log("window clicked");
             }
 
             //minimap functionality
@@ -795,6 +797,15 @@
                     loggit().resetEditor();
                 })
 
+                _(document).keydown("F9", () => {
+                    loggitWindow().craeteInHouseListDialog({
+                        height: 300,
+                        width: 500,
+                        title: 'Select Language',
+                        in: `<li onclick='loggitLangs().changeToCss()'>CSS</li>`
+                    })
+                })
+
                 _(document).keydown("F5", () => {
                     //debug
                     //TODO: add list selection for debug
@@ -889,6 +900,17 @@
                     if (err) throw err;
                     return contents;
                 })
+            }
+
+            function loggitLangs() {
+                const loggitLangs = {};
+                loggitLangs.changeToCss = function() {
+                    var node = document.createElement('script');
+                    node.setAttribute('src', 'codemirror/mode/css/css.js');
+                    document.head.appendChild(node);
+                    editor.setOption('mode', 'css');
+                }
+                return loggitLangs;
             }
 
             function loggitWindow() {
