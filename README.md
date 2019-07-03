@@ -31,3 +31,5 @@ The next section will show you how to apply those things to the editor itself.
 To apply settings, there are two keybinds. Why two? because they both do different things depending on what settings you change.
 
 The keybinds are ``Ctrl+R`` to reload the main window, and ``Ctrl+Shift+Alt+R`` to restart the program
+
+``Ctrl+Shift+Alt+R`` is subject to change.
