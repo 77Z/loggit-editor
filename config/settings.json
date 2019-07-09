@@ -12,5 +12,7 @@
     "lineWrapping": false,
     "workspaceBarVisible": true,
     "useOsTitleBar": false,
-    "openEditorDevToolsOnStart": false
+    "openEditorDevToolsOnStart": false,
+    "codeLinting": true,
+    "miniMap": true
 }

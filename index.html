@@ -120,7 +120,7 @@
     <title>
         Loggit
     </title>
-    <link rel="stylesheet" href="https://77zsite.tk/fonts/fonts.css">
+    <!-- <link rel="stylesheet" href="https://77zsite.tk/fonts/fonts.css"> -->
     <style>
 
         body {
@@ -503,6 +503,42 @@
             z-index: 9999;
         }
     
+        .gutter-test {
+            width: 50px;
+            background: red;
+        }
+
+        .display-working-file {
+            padding-left: 21%;
+            font-size: 24px;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .snackbar {
+            position: fixed;
+            /*bottom: 30px;*/
+            bottom: -30px;
+            width: 300px;
+            left: 50%;
+            margin-left: -150px;
+            background: #333333;
+            box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.6);
+            border-radius: 5px;
+            color: white;
+            font-size: 20px;
+            height: 25px;
+            text-align: center;
+            font-family: sans-serif;
+            font-weight: bold;
+            user-select: none;
+            transition: 0.3s;
+        }
+
+        .snackbar-show {
+            bottom: 30px;
+        }
+
     </style>
 </head>
 <body id="body">
@@ -551,7 +587,9 @@
         <textarea id="codemirror-text"></textarea>
     </div>
     <div class="bottom">
-        <div id="extras-btn"></div>
+        <span class="display-working-file" id="display-working-file">
+            No current working file
+        </span>
     </div>
 
     <div class="side" id="side">
@@ -594,7 +632,7 @@
     <canvas id="map"></canvas>
 
     <div id="CMENU">
-        <ul class="cmenu-options">
+        <ul class="cmenu-options" id="cmenu-options">
             <li onclick="editor.execCommand('find')">
                 Find
             </li>
@@ -605,12 +643,37 @@
             <li>
                 Paste
             </li>
+            <li class="cmenu-seperator"></li>
+            <li onclick="editor.execCommand('undo')">
+                Undo
+            </li>
+            <li onclick="editor.execCommand('redo')">
+                Redo
+            </li>
         </ul>
     </div>
+
+    <div class="snackbar" id="snackbar">Default Text</div>
 
 
 
     <script>
+
+        function snackbar(content) {
+            _('snackbar').edit(content);
+
+            document.getElementById('snackbar').classList.add("snackbar-show");
+
+            setTimeout(function() {
+                document.getElementById('snackbar').classList.remove('snackbar-show');
+            }, 2000);
+        }
+
+        function updateWorkingFileDisplay() {
+            if (CurrentWorkingFile !== null) {
+                _('display-working-file').edit("Working on: " + CurrentWorkingFile);
+            }
+        }
 
             function showEditorContextMenu(event) {
                 var contenxtMenu = document.getElementById('CMENU');
@@ -624,6 +687,7 @@
             }
 
             window.onclick = function() {
+                //Hide Editor Context Menu
                 document.getElementById('CMENU').style.display = "none";
 
                 //close PopBox
@@ -632,7 +696,9 @@
                     _('popbox').style('display', 'none');
                 }, 200)
 
-                console.log("window clicked");
+                updateWorkingFileDisplay();
+
+                //console.log("window clicked");
             }
 
             //minimap functionality
@@ -700,7 +766,7 @@
             function loggit() {
                 const loggit = {}
                 loggit.log = function(message) {
-                    console.log(`%c[Loggit] %c${message}`, 'color: purple', 'color: black');
+                    console.log(`%c[Loggit] %c${message}`, 'color: purple', 'color: normal');
                 }
                 loggit.resetEditor = function() {
                     editor.setOption('AutoCloseBrackets', parsedUserSettings.isAutoCloseBrackets);
@@ -733,6 +799,16 @@
     
     
             _().ready(() => {
+
+                let userCTXrawdata = fs.readFileSync('config/user-ctx-menu.json');
+                let parsedUserCTX = JSON.parse(userCTXrawdata);
+
+                console.log(parsedUserCTX);
+
+                if (parsedUserCTX.customContextOptionsEnabled == true) {
+                    _('cmenu-options').append('<li class="cmenu-seperator"></li>' + parsedUserCTX.data);
+                    loggit().log("Custom Editor Context Menu Options Enabled");
+                }
 
                 if (parsedUserSettings.useOsTitleBar == true) {
                     //remove custom title bar
@@ -822,7 +898,9 @@
                     ipcRenderer.send('open-file-dialog');
                 })
 
-                
+                if (parsedUserSettings.miniMap == false) {
+                    _('map').style('display', 'none');
+                }
             })
 
             ipcRenderer.on('selected-directory', (event, path) => {
@@ -843,6 +921,9 @@
                     if (err) throw err;
                 })
                 console.log("Saved!");
+                snackbar("Saved! Setting working file");
+                CurrentWorkingFile = path;
+                updateWorkingFileDisplay();
             })
 
             ipcRenderer.on('copyEvent', (event) => {
@@ -949,6 +1030,7 @@
                         if (err) throw err;
                     })
                     console.log("Saved!");
+                    snackbar("Saved!");
                 }
             }
     
@@ -967,7 +1049,7 @@
                 foldCode: true,
                 foldGutter: true,
                 gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                lint: true
+                lint: parsedUserSettings.codeLinting
             });
             //createEditor(precode, isLineNumbers, isAutoCloseBrackets);
     
