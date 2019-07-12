@@ -510,7 +510,7 @@
 
         .display-working-file {
             padding-left: 21%;
-            font-size: 24px;
+            font-size: 20px;
             color: white;
             font-family: sans-serif;
         }
@@ -672,6 +672,8 @@
         function updateWorkingFileDisplay() {
             if (CurrentWorkingFile !== null) {
                 _('display-working-file').edit("Working on: " + CurrentWorkingFile);
+            } else {
+                _('display-working-file').edit("No current working file");
             }
         }
 
@@ -869,9 +871,9 @@
                     
                 })
 
-                _(document).keydown("F2", () => {
-                    loggit().resetEditor();
-                })
+                //_(document).keydown("F2", () => {
+                //    loggit().resetEditor();
+                //})
 
                 _(document).keydown("F9", () => {
                     loggitWindow().craeteInHouseListDialog({
@@ -929,6 +931,21 @@
             ipcRenderer.on('copyEvent', (event) => {
                 copyEvent();
             })
+
+            ipcRenderer.on('close-working-file-request', (event) => {
+                closeWorkingFile();
+            })
+
+            function closeWorkingFile() {
+                if (CurrentWorkingFile == null) {
+                    snackbar("No file open");
+                } else {
+                    snackbar("closing...");
+                    editor.setValue("");
+                    CurrentWorkingFile = null;
+                    updateWorkingFileDisplay();
+                }
+            }
 
             function javascriptDebug() {
                 const modalPath = path.join('file://', __dirname, 'JSdebug.html')

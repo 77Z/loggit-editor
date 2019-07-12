@@ -65,6 +65,13 @@ const template = [
           app.relaunch();
           app.quit();
         }
+      },
+      {
+        label: 'Close Working File',
+        accelerator: 'CmdOrCtrl+W',
+        click() {
+          mainWindow.webContents.send('close-working-file-request');
+        }
       }
     ]
   }
