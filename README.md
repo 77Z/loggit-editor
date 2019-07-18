@@ -1,7 +1,13 @@
 # Loggit Editor
-## Code IDE built in electron
+### Code IDE built in electron
 
 [![Build Status](https://travis-ci.com/77Z/loggit-editor.svg?branch=master)](https://travis-ci.com/77Z/loggit-editor)
+![GitHub forks](https://img.shields.io/github/forks/77z/loggit-editor.svg?style=social)
+![GitHub followers](https://img.shields.io/github/followers/77z.svg?label=Follow&style=social)
+![GitHub stars](https://img.shields.io/github/stars/77z/loggit-editor.svg?style=social)
+![GitHub top language](https://img.shields.io/github/languages/top/77z/loggit-editor.svg)
+
+[![77Z Build Status](https://img.shields.io/badge/77Z_build-passing-green.svg)](https://77zsite.tk/builds/loggit-editor)
 
 
 # How to run unbuilt versions
