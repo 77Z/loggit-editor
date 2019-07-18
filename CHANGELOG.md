@@ -10,7 +10,7 @@
 * Added customizable context menus through a JSON file
 * Fixed minor bugs!
 
-### 1.0.6
+### 1.0.6 (7/18/19)
 
 * Fixed paste button in context menu
 * pasteEvent() function working
@@ -21,3 +21,10 @@
 * Deleted "No Path" empty file
 * Minor updates to the pagemap
 * Updated README.md
+
+### 1.0.7 (7/18/19)
+
+* First Major Release!
+* Moved config folder to AppData
+* Build Fixes (Not Travis-ci or 77Z Builds)
+* Module Fixes

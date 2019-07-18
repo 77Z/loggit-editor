@@ -1,5 +1,7 @@
 const {app, BrowserWindow, Menu, Tray, ipcMain, dialog, clipboard} = require('electron');
 const fs = require('fs');
+const os = require('os');
+const homedir = os.homedir()
 var exec = require('child_process').exec;
 
 
@@ -84,7 +86,37 @@ const template = [
   }
 ]
 
-let rawSettingsData = fs.readFileSync('config/settings.json');
+
+//check to see if the settings file exists, if not, then it will make one
+const fileCheckPath = homedir + "\\AppData\\Roaming\\Loggit\\config\\settings.json";
+const configDir = homedir + "\\AppData\\Roaming\\Loggit\\config"
+try {
+  if (!fs.existsSync(fileCheckPath)) {
+    //settings file doesn't exist.
+    //also asuming that the custom
+    //context menu file doesn't exist
+
+    //if the config folder doesn't exist, then make it
+    if (!fs.existsSync(configDir)) {
+      fs.mkdirSync(configDir);
+    }
+
+    //make the settings.json file
+    fs.writeFileSync(configDir + '\\settings.json', '{\n"isAutoCloseBrackets": true,\n"isLineNumbers": true,\n"isAutoCompleteEnabled": true,\n"defaultWorkspace": null,\n"autoSave": false,\n"autoSaveDelay": 500,\n"indentSize": 2,\n"editorDirection": "ltr",\n"lineWrapping": false,\n"workspaceBarVisible": true,\n"useOsTitleBar": false,\n"openEditorDevToolsOnStart": false,\n"codeLinting": true,\n"miniMap": true\n}', function(err) {
+      if (err) throw err;
+    });
+
+    //make the user-ctx-menu.json file
+    fs.writeFileSync(configDir + '\\user-ctx-menu.json', '{\n"customContextOptionsEnabled": false, "data": "<li>Custom Option</li>  <li class=\'cmenu-seperator\'></li>"\n}', function(err) {
+      if (err) throw err;
+    });
+  }
+} catch(err) {
+  console.error(err);
+}
+
+
+let rawSettingsData = fs.readFileSync(configDir + '\\settings.json');
 let parsedUserSettings = JSON.parse(rawSettingsData);
 
 ipcMain.on('open-file-dialog', (event) => {

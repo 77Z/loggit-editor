@@ -1,6 +1,6 @@
 {
   "name": "loggit-editor",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Loggit Lightweight Code Editor",
   "main": "main.js",
   "scripts": {
@@ -21,7 +21,9 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^3.4.1",
-    "jshint": "^2.10.2"
+    "jshint": "^2.10.2",
+    "node-fetch": "^2.6.0",
+    "ws": "^7.1.0"
   },
   "build": {
     "productName": "Loggit",

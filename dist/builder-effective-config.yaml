@@ -5,4 +5,4 @@ productName: Loggit
 appId: tk.a77zsite.loggit
 nsis:
   oneClick: false
-electronVersion: 5.0.5
+electronVersion: 5.0.7

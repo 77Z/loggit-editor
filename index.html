@@ -57,6 +57,9 @@
         const {ipcRenderer} = require('electron')
         const {BrowserWindow} = require('electron').remote
         const path = require('path')
+        const os = require('os');
+        const homedir = os.homedir()
+        const configDir = homedir + "\\AppData\\Roaming\\Loggit\\config"
         //const JSHINT = require('jshint')
     </script>
 
@@ -91,7 +94,7 @@
         //}
 
         //get user settings
-        let rawdata = fs.readFileSync('config/settings.json');
+        let rawdata = fs.readFileSync(configDir + '\\settings.json');
         let parsedUserSettings = JSON.parse(rawdata);
 
         console.log(parsedUserSettings);
@@ -835,7 +838,7 @@
     
             _().ready(() => {
 
-                let userCTXrawdata = fs.readFileSync('config/user-ctx-menu.json');
+                let userCTXrawdata = fs.readFileSync(configDir + '\\user-ctx-menu.json');
                 let parsedUserCTX = JSON.parse(userCTXrawdata);
 
                 console.log(parsedUserCTX);
