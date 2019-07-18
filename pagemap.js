@@ -260,6 +260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
   document.addEventListener('keydown', () => {
     draw();
+    updateCleanFileDisplay();
   })
 
   //window.onclick = function() {

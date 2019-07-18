@@ -311,7 +311,7 @@
         }
 
         .side::-webkit-scrollbar {
-            width: 20px;
+            width: 10px;
             border-radius: 0px;
         }
 
@@ -325,6 +325,8 @@
             background: #cecece;
             border-radius: 0px;
             border: none;
+            border-right: 3px solid black;
+            border-left: 3px solid black;
         }
 
         .side::-webkit-scrollbar-thumb:hover {
@@ -590,6 +592,8 @@
         <span class="display-working-file" id="display-working-file">
             No current working file
         </span>
+
+        <span id="cleanFileDisplay"></span>
     </div>
 
     <div class="side" id="side">
@@ -640,7 +644,7 @@
             <li onclick="copyEvent()">
                 Copy
             </li>
-            <li>
+            <li onclick="pasteEvent()">
                 Paste
             </li>
             <li class="cmenu-seperator"></li>
@@ -659,6 +663,11 @@
 
     <script>
 
+        function foldCodeEvent() {
+            editor.execCommand('fold');
+            console.log("folded");
+        }
+
         function snackbar(content) {
             _('snackbar').edit(content);
 
@@ -667,6 +676,14 @@
             setTimeout(function() {
                 document.getElementById('snackbar').classList.remove('snackbar-show');
             }, 2000);
+        }
+
+        function updateCleanFileDisplay() {
+            if (!editor.isClean()) {
+                _('cleanFileDisplay').edit("*");
+            } else {
+                _('cleanFileDisplay').empty();
+            }
         }
 
         function updateWorkingFileDisplay() {
@@ -700,6 +717,9 @@
 
                 updateWorkingFileDisplay();
 
+                editor.markClean();
+                updateCleanFileDisplay();
+
                 //console.log("window clicked");
             }
 
@@ -726,7 +746,8 @@
                     '.cm-meta': 'rgba(128, 203, 196, 1)',
                     '.cm-attribute': 'rgba(255, 203, 107, 1)',
                     '.cm-property': 'rgba(128, 203, 174, 1)',
-                    '.cm-qualifier': 'rgba(222, 203, 107, 1)'
+                    '.cm-qualifier': 'rgba(222, 203, 107, 1)'//,
+                    //'.CodeMirror': 'rgba(255,0,0,1)'
                 },
                 back: 'rgba(0,0,0,0.02)',
                 view: 'rgba(0,0,0,0.05)',
@@ -788,6 +809,11 @@
                         loggit().log("AutoCloseBrackets is disabled");
                     }
                 }
+                loggit.insertAtCursor = function (text) {
+                    var doc = editor.getDoc();
+                    var cursor = doc.getCursor();
+                    doc.replaceRange(text, cursor);
+                }
                 return loggit;
             }
 
@@ -796,8 +822,15 @@
             }
 
             function pasteEvent() {
-
+                //request for the content of the clipboard from the main
+                ipcRenderer.send('get-clipboard-contents');
             }
+
+            ipcRenderer.on('clipboard-contents', (event, content) => {
+                //insert the contents of the clipboard into CodeMirror
+                loggit().insertAtCursor(content);
+                console.log("Clipboard Content: " + content);
+            })
     
     
             _().ready(() => {
@@ -932,6 +965,10 @@
                 copyEvent();
             })
 
+            ipcRenderer.on('fold-request', (event) => {
+                foldCodeEvent();
+            })
+
             ipcRenderer.on('close-working-file-request', (event) => {
                 closeWorkingFile();
             })
@@ -943,6 +980,7 @@
                     snackbar("closing...");
                     editor.setValue("");
                     CurrentWorkingFile = null;
+                    editor.markClean();
                     updateWorkingFileDisplay();
                 }
             }
@@ -991,6 +1029,8 @@
                     editor.setValue(contents);
                 })
                 CurrentWorkingFile = WorkspaceDir + "\\" + filename;
+                editor.markClean();
+                updateWorkingFileDisplay();
             }
 
             function readFileAndReturn(filenameIncludingDir) {
@@ -1048,6 +1088,8 @@
                     })
                     console.log("Saved!");
                     snackbar("Saved!");
+                    editor.markClean();
+                    updateCleanFileDisplay();
                 }
             }
     

@@ -72,6 +72,13 @@ const template = [
         click() {
           mainWindow.webContents.send('close-working-file-request');
         }
+      },
+      {
+        label: 'Fold Code',
+        accelerator: 'CmdOrCtrl+B',
+        click() {
+          mainWindow.webContents.send('fold-request');
+        }
       }
     ]
   }
@@ -100,6 +107,10 @@ ipcMain.on('get-app-dir', (event) => {
 
 ipcMain.on('copy-to-clipboard', (event, textToCopy) => {
   clipboard.writeText(textToCopy);
+})
+
+ipcMain.on('get-clipboard-contents', (event) => {
+  event.sender.send('clipboard-contents', clipboard.readText());
 })
 
 ipcMain.on('save-dialog', (event) => {
