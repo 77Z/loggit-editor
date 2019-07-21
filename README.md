@@ -39,7 +39,13 @@ The next section will show you how to apply those things to the editor itself.
 
 Currently, we are using an old version of ``electron-builder``. Version 20.39.0.
 
+You can install it by running ``npm i electron-builder@20.39.0 -g``
+
 If you install it globally, you can build Loggit by running: ``build -w``.
+
+ooooorrr if you really, *really,* want to, you can also build for linux BUT ONLY DO IT ON THE LINUX VERSION! 
+[HERE](https://github.com/77Z/loggit-for-linux "CLICK MEEE!!")
+_hint, use:_ ``build -l``
 
 # Applying settings
 
