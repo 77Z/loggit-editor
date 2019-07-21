@@ -9,6 +9,9 @@
 
 [![77Z Build Status](https://img.shields.io/badge/77Z_build-passing-green.svg)](https://77zsite.tk/builds/loggit-editor)
 
+## Get Loggit
+
+[Releases Page](https://github.com/77Z/loggit-editor/releases/latest "Releases")
 
 # How to run unbuilt versions
 ### things you WILL need:
@@ -28,9 +31,15 @@ from there, the editor will start.
 
 there is a settings.json file. It allows you to customize the editor by changing a few values.
 
-it is located in the ``loggit-editor`` folder under ``config/settings.json``
+it is located in ``%appdata%/Loggit`` folder under ``config/settings.json``
 
 The next section will show you how to apply those things to the editor itself.
+
+# Building
+
+Currently, we are using an old version of ``electron-builder``. Version 20.39.0.
+
+If you install it globally, you can build Loggit by running: ``build -w``.
 
 # Applying settings
 
