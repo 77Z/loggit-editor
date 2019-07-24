@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+        This is probably not needed considering we're on chrome
+                            |
+                           \/
+    -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Codemirror scripts -->
@@ -73,6 +78,7 @@
             ipcRenderer.send('quit-action');
         }
     
+        //define some of the settings
         var WorkspaceDir = null;
         var CurrentWorkingFile = null;
         var AutoSave = false;
@@ -97,6 +103,7 @@
         let rawdata = fs.readFileSync(configDir + '\\settings.json');
         let parsedUserSettings = JSON.parse(rawdata);
 
+        //log settings.json
         console.log(parsedUserSettings);
 
         //check for a workspace
@@ -506,6 +513,11 @@
 
         .CodeMirror-lint-tooltip {
             z-index: 9999;
+            background: rgb(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            font-size: 15px;
+            font-family: sans-serif;
         }
     
         .gutter-test {
@@ -544,6 +556,18 @@
             bottom: 30px;
         }
 
+        #cleanFileDisplay {
+            color: white;
+        }
+
+        .CodeMirror-lint-marker-warning {
+            background: url("img/jshint/wrn.png");
+        }
+
+        .CodeMirror-lint-marker-error {
+            background: url("img/jshint/err.png");
+        }
+
     </style>
 </head>
 <body id="body">
@@ -552,6 +576,9 @@
     -->
     <div class="grab-bar" id="grab"></div>
 
+    <!--
+        Window Bar
+    -->
     <div class="top" id="top">
         <span class="title">
             Loggit
@@ -588,9 +615,16 @@
         </svg>
     </div>
     <script src="renderer.js"></script>
+    <!--
+        CodeMirror box
+            |
+           \/
+    -->
     <div class="content" oncontextmenu="return showEditorContextMenu(event)">
         <textarea id="codemirror-text"></textarea>
     </div>
+
+    <!-- File Display -->
     <div class="bottom">
         <span class="display-working-file" id="display-working-file">
             No current working file
@@ -599,9 +633,11 @@
         <span id="cleanFileDisplay"></span>
     </div>
 
+    <!-- File Explorer -->
     <div class="side" id="side">
         <ul class="files-listing" id="files-listing">
             <script>
+                //set the workspace if there is a default one
                 if (WorkspaceDir == null) {
                     _('side').append("<button id='select-workspace'>Select Workspace</button>");
                 } else {
@@ -609,6 +645,7 @@
                     openDIR(WorkspaceDir);
                 }
 
+                //function to open a Directory
                 function openDIR(path) {
                     fs.readdir(path, function(err, items) {
                         console.log("Files in directory: " + items);
@@ -627,6 +664,10 @@
         </ul>
     </div>
 
+    <!--
+        The Popup box
+        example: hit F5!
+    -->
     <div class="popbox" id="popbox">
         <span id="popbox-title">
             NULL
@@ -638,6 +679,7 @@
     <!-- Minimap Markup -->
     <canvas id="map"></canvas>
 
+    <!-- Context Menu for the editor -->
     <div id="CMENU">
         <ul class="cmenu-options" id="cmenu-options">
             <li onclick="editor.execCommand('find')">
@@ -660,17 +702,25 @@
         </ul>
     </div>
 
+    <!--
+        Snackbar Markup
+        example: save a file!
+        run with: snackbar(msg:string);
+    -->
     <div class="snackbar" id="snackbar">Default Text</div>
 
 
 
     <script>
 
+        //folding code
+        //example: select something and hit Ctrl+B
         function foldCodeEvent() {
             editor.execCommand('fold');
             console.log("folded");
         }
 
+        //snackbar function
         function snackbar(content) {
             _('snackbar').edit(content);
 
@@ -681,6 +731,7 @@
             }, 2000);
         }
 
+        //update the little * by the working file
         function updateCleanFileDisplay() {
             if (!editor.isClean()) {
                 _('cleanFileDisplay').edit("*");
@@ -689,6 +740,7 @@
             }
         }
 
+        //update the working file
         function updateWorkingFileDisplay() {
             if (CurrentWorkingFile !== null) {
                 _('display-working-file').edit("Working on: " + CurrentWorkingFile);
@@ -697,6 +749,7 @@
             }
         }
 
+        //show the context menu
             function showEditorContextMenu(event) {
                 var contenxtMenu = document.getElementById('CMENU');
 
@@ -713,9 +766,11 @@
                 document.getElementById('CMENU').style.display = "none";
 
                 //close PopBox
-                _('popbox').style('transform', 'scale(0.01)');
+                //_('popbox').style('transform', 'scale(0.01)');
+                document.getElementById('popbox').style.transform = "scale(0.01)";
                 setTimeout(() => {
-                    _('popbox').style('display', 'none');
+                    document.getElementById('popbox').style.display = "none";
+                    //_('popbox').style('display', 'none');
                 }, 200)
 
                 updateWorkingFileDisplay();
@@ -774,6 +829,7 @@
             var editorDirection = parsedUserSettings.editorDirection;
             var lineWrapping = parsedUserSettings.lineWrapping;
     
+            //deprecated
             var editVars = {
                 setLineNumbers: function(boolean) {
                     isLineNumbers = boolean;
@@ -789,17 +845,20 @@
                 }
             }
     
+            //function calls
             function loggit() {
                 const loggit = {}
                 loggit.log = function(message) {
                     console.log(`%c[Loggit] %c${message}`, 'color: purple', 'color: normal');
                 }
+                //deprecated
                 loggit.resetEditor = function() {
                     editor.setOption('AutoCloseBrackets', parsedUserSettings.isAutoCloseBrackets);
                     editor.setOption('lineNumbers', parsedUserSettings.isLineNumbers);
                     editor.setOption('lineWrapping', lineWrapping);
                     editor.setOption('direction', editorDirection);
                 }
+                //deprecated
                 loggit.recheckValues = function() {
                     if (isLineNumbers == true) {
                         loggit().log("Line numbers are enabled");
@@ -812,6 +871,7 @@
                         loggit().log("AutoCloseBrackets is disabled");
                     }
                 }
+                //allows you to insert text at the text cursor
                 loggit.insertAtCursor = function (text) {
                     var doc = editor.getDoc();
                     var cursor = doc.getCursor();
@@ -820,10 +880,14 @@
                 return loggit;
             }
 
+            //copy to clipboard
+            //can be called
             function copyEvent() {
                 ipcRenderer.send('copy-to-clipboard', editor.getSelection());
             }
 
+            //paste to clipboard
+            //can be called
             function pasteEvent() {
                 //request for the content of the clipboard from the main
                 ipcRenderer.send('get-clipboard-contents');
@@ -838,16 +902,19 @@
     
             _().ready(() => {
 
+                //get the file for custom context menus
                 let userCTXrawdata = fs.readFileSync(configDir + '\\user-ctx-menu.json');
                 let parsedUserCTX = JSON.parse(userCTXrawdata);
 
                 console.log(parsedUserCTX);
 
+                //check if the custom context menu is enabled
                 if (parsedUserCTX.customContextOptionsEnabled == true) {
                     _('cmenu-options').append('<li class="cmenu-seperator"></li>' + parsedUserCTX.data);
                     loggit().log("Custom Editor Context Menu Options Enabled");
                 }
 
+                //check if the OS title bar should be used
                 if (parsedUserSettings.useOsTitleBar == true) {
                     //remove custom title bar
                     var bar = document.querySelector('#top');
@@ -864,6 +931,7 @@
                     content.setAttribute('style', 'height: calc(100% - 24px); top: 0;');
                 }
 
+                //check if the file explorer
                 if (parsedUserSettings.workspaceBarVisible == false) {
                     //make bar dissapear
                     loggit().log("make bar dissapear");
@@ -874,6 +942,7 @@
                     content.setAttribute('style', 'width: 100%');
                 }
 
+                //some settings checkers
                 if (isLineNumbers == true) {
                     loggit().log("Line numbers are enabled");
                 } else {
@@ -885,6 +954,7 @@
                     loggit().log("AutoCloseBrackets is disabled");
                 }
 
+                //FAILLLLL....
                 var fullscreen = false;
 
                 //TODO: finish fullscreen
@@ -907,12 +977,14 @@
                     
                 })
 
+                //deprecated
                 //_(document).keydown("F2", () => {
                 //    loggit().resetEditor();
                 //})
 
+                //TODO: FINISH THIS!!!
                 _(document).keydown("F9", () => {
-                    loggitWindow().craeteInHouseListDialog({
+                    loggitWindow().createInHouseListDialog({
                         height: 300,
                         width: 500,
                         title: 'Select Language',
@@ -921,9 +993,8 @@
                 })
 
                 _(document).keydown("F5", () => {
-                    //debug
-                    //TODO: add list selection for debug
-                    loggitWindow().craeteInHouseListDialog({
+                    //debugger options
+                    loggitWindow().createInHouseListDialog({
                         height: 300,
                         width: 500,
                         title: 'Select Debugger',
@@ -1056,7 +1127,7 @@
 
             function loggitWindow() {
                 const loggitwin = {};
-                loggitwin.craeteInHouseListDialog = function(options) {
+                loggitwin.createInHouseListDialog = function(options) {
                     _('popbox').style('width', options.width + "px");
                     _('popbox').style('height', options.height + "px");
 

@@ -28,3 +28,12 @@
 * Moved config folder to AppData
 * Build Fixes (Not Travis-ci or 77Z Builds)
 * Module Fixes
+
+### 1.0.8 (7/23/19)
+
+* Updated debugger font
+* Gave linter new styling (Error icons, Warning icons, Changed hints)
+* Fixed file display
+* Updated Comments
+* Fixed popbox styling
+* Fixed some spelling

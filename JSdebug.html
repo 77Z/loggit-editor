@@ -86,12 +86,23 @@
             background: #222222;
             color: white;
             padding-left: 20px;
+            font-size: 20px;
+            font-family: sans-serif;
+        }
+
+        .catch-error {
+            background: #ff000050;
         }
 
     </style>
     <script src="vq.min.js"></script>
     <script>
     
+        //window.onerror = function(message, url, lineNumber) {
+        //    _('console').append(`<div class='catch-error'>Message: ${message}<br>URL: ${url}<br>line: ${lineNumber}</div>`);
+        //    return true;
+        //}
+
         (function() {
             var realLog = window.console.log;
             console.log = function(message) {
