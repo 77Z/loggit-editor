@@ -66,6 +66,7 @@
         const homedir = os.homedir()
         const configDir = homedir + "\\AppData\\Roaming\\Loggit\\config"
         //const JSHINT = require('jshint')
+        var simpleGit;
     </script>
 
     <!-- VQ -->
@@ -123,6 +124,10 @@
         } else {
             //autoSave disabled
             AutoSave = false;
+        }
+
+        if (parsedUserSettings.enableGitOnStart == true) {
+            loggitWindow().enableGit();
         }
 
     </script>
@@ -221,6 +226,7 @@
             left: 0;
             height: 100%;
             width: 100%;
+            font-weight: 800;
         }
 
         .CodeMirror-hints {
@@ -318,6 +324,7 @@
             background: #222222;
             padding-top: 30px;
             overflow-y: scroll;
+            overflow-x: hidden;
         }
 
         .side::-webkit-scrollbar {
@@ -430,7 +437,7 @@
             height: 100%;
         }
 
-        #CMENU {
+        #CMENU, .ctxMenu {
             background: #182024;
             padding: 10px;
             position: absolute;
@@ -568,6 +575,56 @@
             background: url("img/jshint/err.png");
         }
 
+        .menu-bar-option {
+            -webkit-app-region: no-drag;
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+            color: white;
+            font-family: sans-serif;
+            transition: 0.2s;
+            background: transparent;
+            display: inline-block;
+            padding-top: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: calc(100% - 5px);
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .menu-bar-option:hover {
+            background: #ffffff50;
+        }
+
+        .first-menubar-option {
+            margin-left: 10px;
+        }
+
+        .ctx-menu-acc {
+            float: right;
+            color: gray;
+        }
+
+        .menu-bar-options {
+            position: fixed;
+            top: 0;
+            height: 29px;
+            left: 100px;
+            z-index: 9999;
+            -webkit-app-region: no-drag;
+        }
+
+        .git-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 45%;
+            width: 20%;
+            background: #111111;
+            display: none;
+        }
+
     </style>
 </head>
 <body id="body">
@@ -659,9 +716,28 @@
                             document.getElementById('files-listing').appendChild(node);
                         }
                     });
+
+                    //try {
+                    //    if (!fs.existsSync(WorkspaceDir + "\\.git")) {
+                    //        //enable git panel
+                    //        loggitWindow().enableGit();
+                    //        loggit().log("Current working directory supports git");
+                    //        simpleGit = require('simple-git')(WorkspaceDir);
+                    //        document.querySelector('.git-panel').setAttribute('style', 'display: block');
+                    //    }
+                    //} catch(err) {
+                    //    console.error(err);
+                    //}
+
                 }
             </script>
         </ul>
+        <button onclick="menubarFile()">FIle</button>
+    </div>
+    <div class="git-panel">
+        <button onclick="git().pull('origin', 'master')">
+            Git Pull
+        </button>
     </div>
 
     <!--
@@ -678,6 +754,12 @@
 
     <!-- Minimap Markup -->
     <canvas id="map"></canvas>
+
+
+    <div class="menu-bar-options">
+        <div class="menu-bar-option" id="file-menubar-option">File</div>
+    </div>
+
 
     <!-- Context Menu for the editor -->
     <div id="CMENU">
@@ -712,6 +794,30 @@
 
 
     <script>
+
+        function menubarFile() {
+            loggit().createContextMenu({
+                y: "29px",
+                x: "20px",
+                content: "<li>Close File<span class='ctx-menu-acc'>Ctrl+W</span></li>"
+            })
+        }
+
+        function menubar() {
+            const menubar = {};
+            menubar.open = function() {
+                const menubarOpen = {};
+                menubarOpen.file = function() {
+                    loggit().createContextMenu({
+                        y: "29px",
+                        x: "20px",
+                        content: "<li>Close File<span class='ctx-menu-acc'>Ctrl+W</span></li>"
+                    })
+                }
+                return menubarOpen;
+            }
+            return menubar;
+        }
 
         //folding code
         //example: select something and hit Ctrl+B
@@ -777,6 +883,12 @@
 
                 editor.markClean();
                 updateCleanFileDisplay();
+
+                //close context menus
+                if(document.body.contains(document.getElementById('customCtxMenu'))) {
+                    _('customCtxMenu').delete();
+                }
+                
 
                 //console.log("window clicked");
             }
@@ -876,6 +988,24 @@
                     var doc = editor.getDoc();
                     var cursor = doc.getCursor();
                     doc.replaceRange(text, cursor);
+                }
+                loggit.createContextMenu = function(CtxMenuOptions) {
+                    var x = CtxMenuOptions.x;
+                    var y = CtxMenuOptions.y;
+                    var content = CtxMenuOptions.content;
+                    var ctxMenuID = "customCtxMenu";
+
+                    var ctxMenuNode = document.createElement("div");
+                    ctxMenuNode.setAttribute("class", "ctxMenu");
+                    ctxMenuNode.setAttribute('id', ctxMenuID);
+                    ctxMenuNode.style.top = y;
+                    ctxMenuNode.style.left = x;
+                    ctxMenuNode.style.zIndex = "9999";
+                    ctxMenuNode.style.display = "block";
+                    //ctxMenuNode.appendChild(document.createTextNode("<ul class='cmenu-options'>" + content + "</ul>"));
+                    document.body.appendChild(ctxMenuNode);
+
+                    _('customCtxMenu').append("<ul class='cmenu-options'>" + content + "</ul>");
                 }
                 return loggit;
             }
@@ -1003,6 +1133,14 @@
                     //javascriptDebug();
                 })
 
+                //_(document).keydown("F7", () => {
+                //    loggit().createContextMenu({
+                //        x: "50px",
+                //        y: "50px",
+                //        content: "<li>This is a context menu</li><li>This is a context menu</li><li>This is a context menu</li><li>This is a context menu</li>"
+                //    })
+                //})
+
                 _('select-workspace').click(() => {
                     ipcRenderer.send('open-file-dialog');
                 })
@@ -1010,6 +1148,11 @@
                 if (parsedUserSettings.miniMap == false) {
                     _('map').style('display', 'none');
                 }
+
+                _('file-menubar-option').click(() => {
+                    menubar().open().file();
+                })
+
             })
 
             ipcRenderer.on('selected-directory', (event, path) => {
@@ -1143,6 +1286,9 @@
                     setTimeout(() => {
                         _('popbox').style('transform', 'scale(1)');
                     }, 10);
+                }
+                loggitwin.enableGit = function() {
+                    document.getElementById('side').style.height = "50%";
                 }
                 return loggitwin;
             }

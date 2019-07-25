@@ -102,7 +102,7 @@ try {
     }
 
     //make the settings.json file
-    fs.writeFileSync(configDir + '\\settings.json', '{\n"isAutoCloseBrackets": true,\n"isLineNumbers": true,\n"isAutoCompleteEnabled": true,\n"defaultWorkspace": null,\n"autoSave": false,\n"autoSaveDelay": 500,\n"indentSize": 2,\n"editorDirection": "ltr",\n"lineWrapping": false,\n"workspaceBarVisible": true,\n"useOsTitleBar": false,\n"openEditorDevToolsOnStart": false,\n"codeLinting": true,\n"miniMap": true\n}', function(err) {
+    fs.writeFileSync(configDir + '\\settings.json', '{\n"isAutoCloseBrackets": true,\n"isLineNumbers": true,\n"isAutoCompleteEnabled": true,\n"defaultWorkspace": null,\n"autoSave": false,\n"autoSaveDelay": 500,\n"indentSize": 2,\n"editorDirection": "ltr",\n"lineWrapping": false,\n"workspaceBarVisible": true,\n"useOsTitleBar": false,\n"openEditorDevToolsOnStart": false,\n"codeLinting": true,\n"miniMap": true,\n"enableGitOnStart": false\n}', function(err) {
       if (err) throw err;
     });
 
@@ -261,4 +261,5 @@ rpc.on('ready', () => {
 
 rpc.login({ clientId }).catch(console.error);
 
+app.removeAsDefaultProtocolClient('loggit');
 app.setAsDefaultProtocolClient("loggit");

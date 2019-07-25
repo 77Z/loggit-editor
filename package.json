@@ -1,6 +1,6 @@
 {
   "name": "loggit-editor",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Loggit Lightweight Code Editor",
   "main": "main.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "jquery": "^3.4.1",
     "jshint": "^2.10.2",
     "node-fetch": "^2.6.0",
+    "simple-git": "^1.122.0",
     "ws": "^7.1.0"
   },
   "build": {

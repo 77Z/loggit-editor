@@ -1,0 +1,486 @@
+body {
+    background: #263238;
+    overflow-x: hidden;
+}
+
+.top {
+    position: fixed;
+    top: 3px;
+    left: 0;
+    width: 100%;
+    height: 26px;
+    background: #222222;
+    -webkit-app-region: drag;
+    z-index: 9997;
+    transition: 0.3s;
+}
+
+.grab-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 3px;
+    background: #222222;
+    left: 0;
+    z-index: 9998;
+    -webkit-app-region: no-drag;
+    transition: 0.3s;
+}
+
+.woodmark {
+    height: 100%;
+}
+
+
+.nav-icon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 29px;
+    width: 48px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 0.2s;
+    -webkit-app-region: no-drag;
+    z-index: 9999;
+}
+
+.nav-icon:hover {
+    background: #ffffff50;
+}
+
+.close-nav-btn:hover {
+    background: red;
+}
+
+.min-max-nav-btn {
+    right: 48px;
+}
+
+.min-nav-btn {
+    right: 96px;
+}
+
+.title {
+    font-family: 'Google Sans';
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    color: white;
+}
+
+.content {
+    position: fixed;
+    top: 29px;
+    right: 0;
+    width: 80%;
+    height: calc(100% - 53px);
+}
+
+.CodeMirror {
+    font-size: 20px;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    font-weight: 800;
+}
+
+.CodeMirror-hints {
+    background: black;
+    border: none;
+    border-radius: 0px;
+}
+
+.CodeMirror-hint {
+    color: white;
+    font-size: 20px;
+}
+
+li.CodeMirror-hint-active {
+    border-radius: 0px;
+}
+
+.cm-wrap-content {
+    position: absolute;
+    bottom: 0;
+    top: 35px;
+    right: 0;
+    width: 100%;
+}
+
+.CodeMirror-hints::-webkit-scrollbar {
+    width: 5px;
+}
+
+.CodeMirror-hints::-webkit-scrollbar-track {
+    background: black;
+}
+
+.CodeMirror-hints::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1000px;
+}
+
+.CodeMirror-hints::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/*::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #263238; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1000px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}*/
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background: #151b1f;
+    border: 5px solid #263238;
+    border-radius: 1000px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cecece; 
+    border: 6px solid #263238;
+    border-radius: 1000px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    background: rgb(0, 0, 200);
+}
+
+.side {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100%;
+    background: #222222;
+    padding-top: 30px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.side::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 0px;
+}
+
+.side::-webkit-scrollbar-track {
+    background: #000000;
+    border-radius: 0px;
+    border: none;
+}
+
+.side::-webkit-scrollbar-thumb {
+    background: #cecece;
+    border-radius: 0px;
+    border: none;
+    border-right: 3px solid black;
+    border-left: 3px solid black;
+}
+
+.side::-webkit-scrollbar-thumb:hover {
+    background: #bbbbbb; 
+}
+
+.files-listing {
+    list-style: none;
+    padding: 0px;
+    text-align: center;
+}
+
+.files-listing li {
+    padding: 0px;
+    margin: 0px;
+    color: white;
+    font-family: sans-serif;
+    cursor: pointer;
+    user-select: none;
+}
+
+.files-listing li:hover {
+    background: #ffffff50;
+}
+
+#select-workspace {
+    text-align: center;
+    border: none;
+    background: blue;
+    color: white;
+    margin: 0px auto;
+    user-select: none;
+    outline: none;
+    width: 150px;
+    cursor: pointer;
+    margin-left: calc(50% - 75px);
+    font-size: 18px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.3);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#list-style-popup {
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 200px;
+    margin-left: -250px;
+    margin-top: -100px;
+    border-radius: 5px;
+    background: #111111;
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.6);
+    color: white;
+    font-family: sans-serif;
+    display: none;
+}
+
+.list-style-popup-inner-hr {
+    width: 70%;
+    border: none;
+    border-bottom: 2px solid white;
+}
+
+#list-style-popup-inner-title {
+    font-size: 32px;
+    font-weight: 900;
+    text-transform: uppercase;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+#list-style-popup-inner-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Minimap Style */
+#map {
+    position: fixed;
+    top: 29px;
+    right: 20px;
+    width: 200px;
+    height: 100%;
+}
+
+#CMENU, .ctxMenu {
+    background: #182024;
+    padding: 10px;
+    position: absolute;
+    width: 250px;
+    height: fit-content;
+    display: none;
+    box-shadow: 0px 0px 15px rgba(50, 163, 255, 0.6);
+    border-radius: 5px;
+}
+
+.cmenu-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: fit-content;
+    width: 100%;
+    background: transparent;
+}
+
+.cmenu-options li:not(.cmenu-seperator) {
+    padding: 5px 0px 5px 0px;
+    cursor: pointer;
+    font-family: sans-serif;
+    transition: 0.1s;
+    color: white;
+}
+
+.cmenu-options li:hover:not(.cmenu-seperator) {
+    background: #ffffff50;
+}
+
+.cmenu-seperator {
+    padding: 0px;
+    margin-top: 5px;
+    border-bottom: 2px solid white;
+    margin-bottom: 5px;
+    cursor: default;
+}
+
+.cmenu-seperator:hover {
+    background: transparent;
+}
+
+.popbox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: #222222;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.3);
+    border-radius: 5px;
+    color: white;
+    font-family: sans-serif;
+    transform: scale(0.01);
+    transition: 0.2s;
+    display: none;
+}
+
+.popbox span {
+    font-size: 40px;
+    display: block;
+    text-align: center;
+}
+
+#popbox-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+#popbox-list li {
+    transition: 0.2s;
+}
+
+#popbox-list li:hover {
+    background: #ffffff50;
+}
+
+.CodeMirror-lint-tooltip {
+    z-index: 9999;
+    background: rgb(0,0,0,0.7);
+    color: white;
+    padding: 10px;
+    font-size: 15px;
+    font-family: sans-serif;
+}
+
+.gutter-test {
+    width: 50px;
+    background: red;
+}
+
+.display-working-file {
+    padding-left: 21%;
+    font-size: 20px;
+    color: white;
+    font-family: sans-serif;
+}
+
+.snackbar {
+    position: fixed;
+    /*bottom: 30px;*/
+    bottom: -30px;
+    width: 300px;
+    left: 50%;
+    margin-left: -150px;
+    background: #333333;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.6);
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    height: 25px;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    user-select: none;
+    transition: 0.3s;
+}
+
+.snackbar-show {
+    bottom: 30px;
+}
+
+#cleanFileDisplay {
+    color: white;
+}
+
+.CodeMirror-lint-marker-warning {
+    background: url("img/jshint/wrn.png");
+}
+
+.CodeMirror-lint-marker-error {
+    background: url("img/jshint/err.png");
+}
+
+.menu-bar-option {
+    -webkit-app-region: no-drag;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    color: white;
+    font-family: sans-serif;
+    transition: 0.2s;
+    background: transparent;
+    display: inline-block;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: calc(100% - 5px);
+    user-select: none;
+    cursor: pointer;
+}
+
+.menu-bar-option:hover {
+    background: #ffffff50;
+}
+
+.first-menubar-option {
+    margin-left: 10px;
+}
+
+.ctx-menu-acc {
+    float: right;
+    color: gray;
+}
+
+.menu-bar-options {
+    position: fixed;
+    top: 0;
+    height: 29px;
+    left: 100px;
+    z-index: 9999;
+    -webkit-app-region: no-drag;
+}
+
+.git-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 45%;
+    width: 20%;
+    background: #111111;
+    display: none;
+}
