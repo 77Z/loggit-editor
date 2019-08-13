@@ -54,3 +54,5 @@ To apply settings, there are two keybinds. Why two? because they both do differe
 The keybinds are ``Ctrl+R`` to reload the main window, and ``Ctrl+Shift+Alt+R`` to restart the program
 
 ``Ctrl+Shift+Alt+R`` is subject to change.
+
+It's ``Ctrl+Shift+Alt+Q`` on Linux because ``Ctrl+Shift+Alt+R`` triggers the default recording software...
