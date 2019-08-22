@@ -8,7 +8,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/77z/loggit-editor.svg)
 
 [![77Z Build Status](https://img.shields.io/badge/77Z_build-passing-green.svg)](https://77zsite.tk/builds/loggit-editor)
-[![Loggit Supported Versions](https://img.shields.io/badge/Loggit_Supported_Platforms-Windows_%7C%20_Linux-lightgrey)]
+[Loggit Supported Versions](https://img.shields.io/badge/Loggit_Supported_Platforms-Windows_%7C%20_Linux-lightgrey)
 
 ## Get Loggit
 
