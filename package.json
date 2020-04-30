@@ -20,7 +20,7 @@
   "author": "Vince Richter",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jshint": "^2.10.2",
     "node-fetch": "^2.6.0",
     "simple-git": "^1.122.0",
